@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'antlr'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+generateGrammarSource {
+    arguments += ["-package","com.nedap.healthcare.eline","-visitor"]
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    antlr 'org.antlr:antlr4:4.9.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets.main.java.srcDirs += 'build/generated-src/antlr'
