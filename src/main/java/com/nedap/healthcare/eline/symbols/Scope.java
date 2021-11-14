@@ -1,5 +1,7 @@
 package com.nedap.healthcare.eline.symbols;
 
+import com.nedap.healthcare.eline.ansi.Ansi;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,5 +36,11 @@ public class Scope {
 
     public int getLevel() {
         return level;
+    }
+
+    public String listSymbols() {
+        StringBuilder list = new StringBuilder();
+        symbols.forEach(symbol -> list.append(Ansi.Blue.colorize(symbol.getIdentifier() + " - ")));
+        return list.toString();
     }
 }
