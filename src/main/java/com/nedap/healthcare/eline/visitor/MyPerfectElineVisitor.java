@@ -3,6 +3,10 @@ package com.nedap.healthcare.eline.visitor;
 import com.nedap.healthcare.eline.ElineBaseVisitor;
 import com.nedap.healthcare.eline.ElineLexer;
 import com.nedap.healthcare.eline.ElineParser;
+import com.nedap.healthcare.eline.exceptions.DuplicateLocalSymbolException;
+import com.nedap.healthcare.eline.exceptions.UnregisteredSymbolException;
+import com.nedap.healthcare.eline.symbols.Symbol;
+import com.nedap.healthcare.eline.symbols.SymbolTable;
 import com.nedap.healthcare.eline.tree.node.*;
 
 import java.util.List;
@@ -10,33 +14,49 @@ import java.util.stream.Collectors;
 
 public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
 
-
-    /*
-    var y = x + 7;
-    var y = 4; // kapot
-    {
-      var y = 2;
-      var z = y * x;
-    }
-     */
+    private SymbolTable symbolTable = new SymbolTable();
 
     @Override
     public ASTNode visitProgram(ElineParser.ProgramContext ctx) {
-        return new ProgramNode(ctx.statement().stream().map(this::visit).collect(Collectors.toList()));
+        symbolTable.openScope();
+        var node = new ProgramNode(ctx.statement().stream().map(this::visit).collect(Collectors.toList()));
+        symbolTable.closeScope();
+        return node;
     }
 
     @Override
     public ASTNode visitAssign(ElineParser.AssignContext ctx) {
-        return new AssignNode(List.of(new IDNode(ctx.ID().getText()), visit(ctx.expression())));
+        String identifier = ctx.ID().getText();
+
+        var node = new AssignNode(List.of(new IDNode(ctx.ID().getText()), visit(ctx.expression())));
+
+        try {
+            symbolTable.checkSymbol(identifier);
+            symbolTable.addSymbol(new Symbol(identifier));
+        } catch(DuplicateLocalSymbolException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return node;
     }
 
     @Override
     public ASTNode visitBlock(ElineParser.BlockContext ctx) {
-        return new BlockNode(ctx.statement().stream().map(this::visit).collect(Collectors.toList()));
+        symbolTable.openScope();
+        var node = new BlockNode(ctx.statement().stream().map(this::visit).collect(Collectors.toList()));
+        symbolTable.closeScope();
+        return node;
     }
 
     @Override
     public ASTNode visitIdentifier(ElineParser.IdentifierContext ctx) {
+        String identifier = ctx.ID().getText();
+
+        try {
+            symbolTable.findSymbol(identifier);
+        } catch(UnregisteredSymbolException e) {
+            System.out.println(e.getMessage());
+        }
         return new IDNode(ctx.ID().getText());
     }
 
