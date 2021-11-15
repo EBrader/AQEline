@@ -8,6 +8,10 @@ public interface ASTVisitor <I>  {
 
     I visit(ProgramNode node);
 
+    I visit(AssignNode node);
+
+    I visit(BlockNode node);
+
     I visit(MulNode node);
 
     I visit(DivNode node);

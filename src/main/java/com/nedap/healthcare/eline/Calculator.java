@@ -2,6 +2,7 @@ package com.nedap.healthcare.eline;
 
 import com.nedap.healthcare.eline.symbols.SymbolTable;
 import com.nedap.healthcare.eline.visitor.MyPerfectElineVisitor;
+import com.nedap.healthcare.eline.visitor.MyPerfectSymbolTableVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -23,5 +24,6 @@ public class Calculator {
         var stat = parser.program();;
 
         var ast = stat.accept(new MyPerfectElineVisitor());
+        ast.accept(new MyPerfectSymbolTableVisitor());
     }
 }
