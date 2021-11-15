@@ -5,19 +5,13 @@ import java.util.Objects;
 public class Symbol {
 
     private final String identifier;
-    private final int value;
 
-    public Symbol(String identifier, int value) {
+    public Symbol(String identifier) {
         this.identifier = identifier;
-        this.value = value;
     }
 
     public String getIdentifier() {
         return identifier;
-    }
-
-    public int getValue() {
-        return value;
     }
 
     @Override
