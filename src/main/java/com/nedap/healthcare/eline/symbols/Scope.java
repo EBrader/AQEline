@@ -6,36 +6,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Scope {
-
-    private final Scope next;
-    private final int level;
+    private final Scope parent;
 
     private final Set<Symbol> symbols = new HashSet<>();
 
-    public Scope(Scope next, int level) {
-        this.next = next;
-        this.level = level;
+    public Scope(Scope parent) {
+        this.parent = parent;
     }
 
-    public void register(final Symbol symbol) {
+    public Scope getParent() {
+        return parent;
+    }
+
+    public void declare(final Symbol symbol) {
         symbols.add(symbol);
     }
 
-    public boolean isRegistered(final String identifier) {
-        return symbols.stream().anyMatch(symbol -> symbol.getIdentifier().equals(identifier));
+    public boolean exists(final String identifier) {
+        return symbols.stream().anyMatch(s -> s.getIdentifier().equals(identifier));
     }
 
-    public Symbol getSymbol(final String identifier) {;
-        // Method is called prior to "isRegistered"
-        return symbols.stream().filter(symbol -> symbol.getIdentifier().equals(identifier)).findFirst().get();
-    }
-
-    public Scope getNext() {
-        return next;
-    }
-
-    public int getLevel() {
-        return level;
+    public Symbol resolve(final String identifier) {
+        // Method is called prior to "exists"
+        final Symbol symbol = symbols.stream().filter(s -> s.getIdentifier().equals(identifier)).findFirst().orElse(null);
+        if (symbol != null) {
+            return symbol;
+        }
+        if (parent != null) {
+            return parent.resolve(identifier);
+        }
+        return null;
     }
 
     public String listSymbols() {

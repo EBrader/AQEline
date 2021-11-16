@@ -17,7 +17,8 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitAssign(ElineParser.AssignContext ctx) {
-        return new AssignNode(List.of(new IDNode(ctx.ID().getText()), visit(ctx.expression())));
+        IDNode idNode = new IDNode(ctx.ID().getText());
+        return new AssignNode(idNode, visit(ctx.expression()));
     }
 
     @Override
