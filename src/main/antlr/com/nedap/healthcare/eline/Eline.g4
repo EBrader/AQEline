@@ -6,7 +6,7 @@ program
     ;
 
 statement
-    :  VAR ID ASSIGN expression ';'                 #assign
+    :  type=(NUM|STR) ID ASSIGN expression ';'                 #assign
     | '{' statement* '}'                            #block
     ;
 
@@ -34,7 +34,8 @@ ASSIGN: '=';
 WHITESPACE: [ \t]+ -> skip;
 NEWLINE: '\r'? '\n' -> skip;
 
-VAR: 'var';
+NUM: 'int';
+STR: 'String';
 
 ID: [a-zA-Z]+;
 INT: [1-9][0-9]*;

@@ -4,6 +4,7 @@ import com.nedap.healthcare.eline.ElineBaseVisitor;
 import com.nedap.healthcare.eline.ElineLexer;
 import com.nedap.healthcare.eline.ElineParser;
 import com.nedap.healthcare.eline.tree.node.*;
+import com.nedap.healthcare.eline.types.Type;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +19,8 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
     @Override
     public ASTNode visitAssign(ElineParser.AssignContext ctx) {
         IDNode idNode = new IDNode(ctx.ID().getText());
-        return new AssignNode(idNode, visit(ctx.expression()));
+        Type idType = ctx.type.getType() == ElineLexer.NUM ? Type.INTEGER : Type.STRING;
+        return new AssignNode(idType, idNode, visit(ctx.expression()));
     }
 
     @Override
