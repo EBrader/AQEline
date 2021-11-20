@@ -1,5 +1,13 @@
 package com.nedap.healthcare.eline.tree.node;
 
+import com.nedap.healthcare.eline.tree.node.assign.AssignFloatNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignIntNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignStrNode;
+import com.nedap.healthcare.eline.tree.node.function.*;
+import com.nedap.healthcare.eline.tree.node.type.FloatNode;
+import com.nedap.healthcare.eline.tree.node.type.IntNode;
+import com.nedap.healthcare.eline.tree.node.type.StringNode;
+
 public interface ASTVisitor <I>  {
 
     default I visit(ASTNode node) {

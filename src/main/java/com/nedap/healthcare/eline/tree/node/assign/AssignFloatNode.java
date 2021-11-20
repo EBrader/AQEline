@@ -1,12 +1,15 @@
-package com.nedap.healthcare.eline.tree.node;
+package com.nedap.healthcare.eline.tree.node.assign;
+
+import com.nedap.healthcare.eline.tree.node.ASTNode;
+import com.nedap.healthcare.eline.tree.node.ASTVisitor;
 
 import java.util.List;
 
-public class AssignIntNode extends ASTNode {
+public class AssignFloatNode extends ASTNode {
 
     private final String symbolId;
 
-    public AssignIntNode(String symbolId, ASTNode expression) {
+    public AssignFloatNode(String symbolId, ASTNode expression) {
         super(List.of(expression));
         this.symbolId = symbolId;
     }

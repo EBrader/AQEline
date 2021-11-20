@@ -1,4 +1,7 @@
-package com.nedap.healthcare.eline.tree.node;
+package com.nedap.healthcare.eline.tree.node.type;
+
+import com.nedap.healthcare.eline.tree.node.ASTNode;
+import com.nedap.healthcare.eline.tree.node.ASTVisitor;
 
 public class IntNode extends ASTNode {
     private final Integer number;

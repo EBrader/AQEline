@@ -2,7 +2,17 @@ package com.nedap.healthcare.eline.visitor;
 
 import com.nedap.healthcare.eline.symbols.Symbol;
 import com.nedap.healthcare.eline.symbols.SymbolTable;
-import com.nedap.healthcare.eline.tree.node.*;
+import com.nedap.healthcare.eline.tree.node.ASTVisitor;
+import com.nedap.healthcare.eline.tree.node.BlockNode;
+import com.nedap.healthcare.eline.tree.node.ProgramNode;
+import com.nedap.healthcare.eline.tree.node.SymbolNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignFloatNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignIntNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignStrNode;
+import com.nedap.healthcare.eline.tree.node.function.*;
+import com.nedap.healthcare.eline.tree.node.type.FloatNode;
+import com.nedap.healthcare.eline.tree.node.type.IntNode;
+import com.nedap.healthcare.eline.tree.node.type.StringNode;
 import com.nedap.healthcare.eline.types.Type;
 
 public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {

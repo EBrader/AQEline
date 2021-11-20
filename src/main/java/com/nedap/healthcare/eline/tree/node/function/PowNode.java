@@ -1,4 +1,7 @@
-package com.nedap.healthcare.eline.tree.node;
+package com.nedap.healthcare.eline.tree.node.function;
+
+import com.nedap.healthcare.eline.tree.node.ASTNode;
+import com.nedap.healthcare.eline.tree.node.ASTVisitor;
 
 import java.util.List;
 

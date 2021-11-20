@@ -3,7 +3,17 @@ package com.nedap.healthcare.eline.visitor;
 import com.nedap.healthcare.eline.ElineBaseVisitor;
 import com.nedap.healthcare.eline.ElineLexer;
 import com.nedap.healthcare.eline.ElineParser;
-import com.nedap.healthcare.eline.tree.node.*;
+import com.nedap.healthcare.eline.tree.node.ASTNode;
+import com.nedap.healthcare.eline.tree.node.BlockNode;
+import com.nedap.healthcare.eline.tree.node.ProgramNode;
+import com.nedap.healthcare.eline.tree.node.SymbolNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignFloatNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignIntNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignStrNode;
+import com.nedap.healthcare.eline.tree.node.function.*;
+import com.nedap.healthcare.eline.tree.node.type.FloatNode;
+import com.nedap.healthcare.eline.tree.node.type.IntNode;
+import com.nedap.healthcare.eline.tree.node.type.StringNode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +32,7 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitAssignFloat(ElineParser.AssignFloatContext ctx) {
-        return new AssignStrNode(ctx.SYM().getText(), visit(ctx.expression()));
+        return new AssignFloatNode(ctx.SYM().getText(), visit(ctx.expression()));
     }
 
     @Override
