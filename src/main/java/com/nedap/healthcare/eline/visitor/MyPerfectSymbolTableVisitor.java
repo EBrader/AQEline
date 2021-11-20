@@ -1,6 +1,5 @@
 package com.nedap.healthcare.eline.visitor;
 
-import com.nedap.healthcare.eline.ansi.Ansi;
 import com.nedap.healthcare.eline.symbols.Symbol;
 import com.nedap.healthcare.eline.symbols.SymbolTable;
 import com.nedap.healthcare.eline.tree.node.*;
@@ -9,14 +8,6 @@ import com.nedap.healthcare.eline.types.Type;
 public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
 
     private SymbolTable symbolTable = new SymbolTable();
-
-    private void printDuplicate(String identifier) {
-        System.out.println(Ansi.BgRed.colorize("Symbol [" + identifier + "] already in scope."));
-    }
-
-    private void printUndeclared(String identifier) {
-        System.out.println(Ansi.BgRed.colorize("Symbol [" + identifier + "] not declared."));
-    }
 
     @Override
     public Void visit(ProgramNode node) {
@@ -27,18 +18,29 @@ public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
     }
 
     @Override
-    public Void visit(AssignNode node) {
-        Type type = node.getType();
-        String identifier = node.getIdNode().getId();
+    public Void visit(AssignIntNode node) {
+        String symbol = node.getSymbolId();
 
-        symbolTable.openAssignType(type);
-        visit(node.getChildren().get(1));
-        symbolTable.closeAssignType();
+        symbolTable.setCurrentType(Type.INTEGER);
+        visit(node.getChildren().get(0));
+        symbolTable.resetCurrentType();
 
-        if (!symbolTable.checkSymbol(identifier)) {
-            symbolTable.declare(new Symbol(type, identifier));
-        } else {
-            printDuplicate(identifier);
+        if (!symbolTable.checkSymbol(symbol)) {
+            symbolTable.declare(new Symbol(Type.INTEGER, symbol));
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(AssignStrNode node) {
+        String symbol = node.getSymbolId();
+
+        symbolTable.setCurrentType(Type.STRING);
+        visit(node.getChildren().get(0));
+        symbolTable.resetCurrentType();
+
+        if (!symbolTable.checkSymbol(symbol)) {
+            symbolTable.declare(new Symbol(Type.STRING, symbol));
         }
         return null;
     }
@@ -53,55 +55,52 @@ public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
 
     @Override
     public Void visit(MulNode node) {
-        symbolTable.checkFunctionType("*");
         node.getChildren().forEach(this::visit);
         return null;
     }
 
     @Override
     public Void visit(DivNode node) {
-        symbolTable.checkFunctionType("/");
         node.getChildren().forEach(this::visit);
         return null;
     }
 
     @Override
     public Void visit(SubNode node) {
-        symbolTable.checkFunctionType("-");
         node.getChildren().forEach(this::visit);
         return null;
     }
 
     @Override
     public Void visit(AddNode node) {
-        symbolTable.checkFunctionType("+");
         node.getChildren().forEach(this::visit);
         return null;
     }
 
     @Override
     public Void visit(PowNode node) {
-        symbolTable.checkFunctionType("^");
         node.getChildren().forEach(this::visit);
         return null;
     }
 
     @Override
-    public Void visit(IDNode node) {
-            String identifier = node.getId();
-            Symbol symbol = symbolTable.resolve(identifier);
+    public Void visit(SymbolNode node) {
+            String symbolId = node.getSymbolId();
+            Symbol symbol = symbolTable.resolve(symbolId);
 
-            if(symbol == null && !symbolTable.isStringType()) {
-                printUndeclared(identifier);
-            } else if (symbol != null){
+            if(symbol != null) {
                 symbolTable.checkSymbolType(symbol);
             }
         return null;
     }
 
     @Override
+    public Void visit(StringNode node) {
+        return null;
+    }
+
+    @Override
     public Void visit(NumNode node) {
-        symbolTable.checkNumType(node.getNumber());
         return null;
     }
 }

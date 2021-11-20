@@ -8,7 +8,9 @@ public interface ASTVisitor <I>  {
 
     I visit(ProgramNode node);
 
-    I visit(AssignNode node);
+    I visit(AssignIntNode node);
+
+    I visit(AssignStrNode node);
 
     I visit(BlockNode node);
 
@@ -22,7 +24,9 @@ public interface ASTVisitor <I>  {
 
     I visit(PowNode node);
 
-    I visit(IDNode node);
+    I visit(SymbolNode node);
+
+    I visit(StringNode node);
 
     I visit(NumNode node);
 }

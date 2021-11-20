@@ -6,16 +6,22 @@ program
     ;
 
 statement
-    :  type=(NUM|STR) ID ASSIGN expression ';'                 #assign
+    :  NUM SYM ASSIGN expression ';'                 #assignInt
+    |  STR SYM ASSIGN string_expression ';'          #assignStr
     | '{' statement* '}'                            #block
     ;
+
+string_expression: left=string_expression ADD right=string_expression #addStr
+                 | STRING_LITERAL                                     #literalStr
+                 | SYM                                                 #symbolStr
+                 ;
 
 expression
     : left=expression POW          right=expression #power
     | left=expression op=(MUL|DIV) right=expression #mulDiv
     | left=expression op=(ADD|SUB) right=expression #addSub
     | INT                                           #primitive
-    | ID                                            #identifier
+    | SYM                                           #symbol
     | HLEFT expression HRIGHT                       #parenthesized
     ;
 
@@ -37,7 +43,9 @@ NEWLINE: '\r'? '\n' -> skip;
 NUM: 'int';
 STR: 'String';
 
-ID: [a-zA-Z]+;
+STRING_LITERAL: '"' SYM '"';
+
+SYM: [a-zA-Z]+;
 INT: [1-9][0-9]*;
 
 LINE_COMMENT

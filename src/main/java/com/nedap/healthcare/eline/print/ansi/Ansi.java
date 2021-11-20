@@ -1,4 +1,4 @@
-package com.nedap.healthcare.eline.ansi;
+package com.nedap.healthcare.eline.print.ansi;
 
 import java.util.ArrayList;
 import java.util.Collections;

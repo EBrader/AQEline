@@ -4,7 +4,6 @@ import com.nedap.healthcare.eline.ElineBaseVisitor;
 import com.nedap.healthcare.eline.ElineLexer;
 import com.nedap.healthcare.eline.ElineParser;
 import com.nedap.healthcare.eline.tree.node.*;
-import com.nedap.healthcare.eline.types.Type;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +16,13 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitAssign(ElineParser.AssignContext ctx) {
-        IDNode idNode = new IDNode(ctx.ID().getText());
-        Type idType = ctx.type.getType() == ElineLexer.NUM ? Type.INTEGER : Type.STRING;
-        return new AssignNode(idType, idNode, visit(ctx.expression()));
+    public ASTNode visitAssignInt(ElineParser.AssignIntContext ctx) {
+        return new AssignIntNode(ctx.SYM().getText(), visit(ctx.expression()));
+    }
+
+    @Override
+    public ASTNode visitAssignStr(ElineParser.AssignStrContext ctx) {
+        return new AssignStrNode(ctx.SYM().getText(), visit(ctx.string_expression()));
     }
 
     @Override
@@ -29,8 +31,21 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
     }
 
     @Override
-    public ASTNode visitIdentifier(ElineParser.IdentifierContext ctx) {
-        return new IDNode(ctx.ID().getText());
+    public ASTNode visitAddStr(ElineParser.AddStrContext ctx) {
+        return new AddNode(List.of(visit(ctx.left), visit(ctx.right)));
+    }
+
+    @Override
+    public ASTNode visitLiteralStr(ElineParser.LiteralStrContext ctx) {
+        return new StringNode(ctx.STRING_LITERAL().getText());
+    }
+
+    @Override
+    public ASTNode visitSymbolStr(ElineParser.SymbolStrContext ctx) { return new SymbolNode(ctx.SYM().getText()); }
+
+    @Override
+    public ASTNode visitSymbol(ElineParser.SymbolContext ctx) {
+        return new SymbolNode(ctx.SYM().getText());
     }
 
     @Override

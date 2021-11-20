@@ -1,75 +1,73 @@
 package com.nedap.healthcare.eline.symbols;
 
 
-import com.nedap.healthcare.eline.ansi.Ansi;
+import com.nedap.healthcare.eline.print.ansi.Ansi;
+import com.nedap.healthcare.eline.print.log.Logging;
 import com.nedap.healthcare.eline.types.Type;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SymbolTable {
     private Scope currentScope = null;
-    private AssignType currentAssignType = null;
+    private Type currentType = null;
 
-    private static final boolean PRINT_LOG = true;
+    private final List<String> ERROR_LOG = new ArrayList<>();
 
     public void openScope() {
         currentScope = new Scope(currentScope);
-        printLog("Creating scope", Ansi.Green);
+        Logging.printLog(Logging.CREATE_SCOPE, Ansi.Green);
     }
 
     public void closeScope() {
-        printLog("Closing scope", Ansi.Red);
-        printLog(String.format("Registered symbols: " + currentScope.listSymbols(), ""), Ansi.Magenta);
+        Logging.printLog(Logging.CLOSE_SCOPE, Ansi.Green);
+        Logging.printLog(String.format(Logging.REGISTERED, currentScope.listSymbols()), Ansi.Magenta);;
         currentScope = currentScope.getParent();
     }
 
-    public void openAssignType(final Type parent) {
-        currentAssignType = new AssignType(parent);
-    }
-
-    public void closeAssignType() {
-        currentAssignType = null;
+    public void checkErrors() {
+        if(ERROR_LOG.isEmpty()) {
+            Logging.printLog(Logging.SUCCESS_ST, Ansi.BgGreen);
+        } else {
+            Logging.printLog(Logging.ERROR_ST, Ansi.BgRed);
+            for(String error : ERROR_LOG) {
+                Logging.printLog(error, Ansi.Red);
+            }
+            throw new RuntimeException();
+        }
     }
 
     public void declare(final Symbol symbol) {
-        printLog("Registering symbol: " + Ansi.Blue.colorize(symbol.getIdentifier()), Ansi.Magenta);
+        Logging.printLog(String.format(Logging.REGISTER, symbol.getIdentifier()), Ansi.Magenta);
         currentScope.declare(symbol);
     }
 
     public boolean checkSymbol(String identifier) {
-        return currentScope.exists(identifier);
+        boolean check = currentScope.exists(identifier);
+        if(check) {
+            logError(String.format(Logging.ERROR_DUPLICATE, identifier));
+        }
+        return check;
     }
 
     public Symbol resolve(String identifier) {
-        return currentScope.resolve(identifier);
+        Symbol symbol = currentScope.resolve(identifier);
+        if(symbol == null) {
+            logError(String.format(Logging.ERROR_UNREGISTERED, identifier));
+        }
+        return symbol;
     }
 
     public void checkSymbolType(final Symbol symbol) {
-        Type childType = symbol.getType();
-        String identifier = symbol.getIdentifier();
-
-        if (currentAssignType.isInvalid(childType)) {
-            printLog("For symbol [" + identifier + "]:\nInvalid type [" + childType.name() + "] while expected [" + currentAssignType.getParentType().name() + "]", Ansi.BgRed);
+        if(symbol.getType() != currentType) {
+            ERROR_LOG.add(String.format(Logging.ERROR_ST_TYPE, symbol.getIdentifier(), symbol.getType().name(), currentType.name()));
         }
     }
+    public void setCurrentType(Type currentType) { this.currentType = currentType; }
+    public void resetCurrentType() { currentType = null; }
 
-    public boolean isStringType() {
-        return currentAssignType.getParentType() == Type.STRING;
-    }
-
-    public void checkNumType(int number) {
-        if(currentAssignType.isInvalid(Type.INTEGER)) {
-            printLog("Invalid numeric type [" + String.valueOf(number) + "] should be parsed to [" + currentAssignType.getParentType().name() + "]", Ansi.BgRed);
-        }
-    }
-
-    public void checkFunctionType(final String function) {
-        if(currentAssignType.isInvalid(function)) {
-            printLog("Invalid function type [" + function + "] cannot be applied to [" + currentAssignType.getParentType().name() + "]", Ansi.BgRed);
-        }
-    }
-
-    public static void printLog(final String message, final Ansi color) {
-        String log = PRINT_LOG ? color.colorize(message) + "\n" : "";
-        System.out.print(log);
+    private void logError(final String message) {
+        ERROR_LOG.add(message);
     }
 }
 

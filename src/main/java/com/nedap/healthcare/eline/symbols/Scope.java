@@ -1,6 +1,6 @@
 package com.nedap.healthcare.eline.symbols;
 
-import com.nedap.healthcare.eline.ansi.Ansi;
+import com.nedap.healthcare.eline.print.ansi.Ansi;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +17,9 @@ public class Scope {
     public Scope getParent() {
         return parent;
     }
+    // int j = 3.7 + 4; -- mag niet!
+    // float k = 3.7 + 4; -- mag wel
+
 
     public void declare(final Symbol symbol) {
         symbols.add(symbol);
