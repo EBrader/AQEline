@@ -21,7 +21,7 @@ public class SymbolTable {
 
     public void closeScope() {
         Logging.printLog(Logging.CLOSE_SCOPE, Ansi.Green);
-        Logging.printLog(String.format(Logging.REGISTERED, Ansi.Blue.colorize(currentScope.listSymbols())), Ansi.Magenta);;
+        Logging.printLog(String.format(Logging.REGISTERED, Ansi.Blue.colorize(currentScope.listSymbols())), Ansi.Magenta);
         currentScope = currentScope.getParent();
     }
 

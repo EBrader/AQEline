@@ -7,7 +7,7 @@ import com.nedap.healthcare.eline.types.Type;
 
 public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
 
-    private SymbolTable symbolTable = new SymbolTable();
+    private final SymbolTable symbolTable = new SymbolTable();
 
     @Override
     public Void visit(ProgramNode node) {
