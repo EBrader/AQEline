@@ -10,6 +10,8 @@ public interface ASTVisitor <I>  {
 
     I visit(AssignIntNode node);
 
+    I visit(AssignFloatNode node);
+
     I visit(AssignStrNode node);
 
     I visit(BlockNode node);
@@ -28,5 +30,7 @@ public interface ASTVisitor <I>  {
 
     I visit(StringNode node);
 
-    I visit(NumNode node);
+    I visit(FloatNode node);
+
+    I visit(IntNode node);
 }

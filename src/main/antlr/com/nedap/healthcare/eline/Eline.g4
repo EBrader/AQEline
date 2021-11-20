@@ -7,8 +7,9 @@ program
 
 statement
     :  NUM SYM ASSIGN expression ';'                 #assignInt
+    |  FLT SYM ASSIGN expression ';'                 #assignFloat
     |  STR SYM ASSIGN string_expression ';'          #assignStr
-    | '{' statement* '}'                            #block
+    | '{' statement* '}'                             #block
     ;
 
 string_expression: left=string_expression ADD right=string_expression #addStr
@@ -20,7 +21,7 @@ expression
     : left=expression POW          right=expression #power
     | left=expression op=(MUL|DIV) right=expression #mulDiv
     | left=expression op=(ADD|SUB) right=expression #addSub
-    | INT                                           #primitive
+    | prim=(INT|FLOAT)                              #primitive
     | SYM                                           #symbol
     | HLEFT expression HRIGHT                       #parenthesized
     ;
@@ -41,12 +42,14 @@ WHITESPACE: [ \t]+ -> skip;
 NEWLINE: '\r'? '\n' -> skip;
 
 NUM: 'int';
+FLT: 'float';
 STR: 'String';
 
 STRING_LITERAL: '"' SYM '"';
 
 SYM: [a-zA-Z]+;
 INT: [1-9][0-9]*;
+FLOAT: INT '.' [0-9]*;
 
 LINE_COMMENT
     : '//' ~[\r\n]* NEWLINE -> skip;

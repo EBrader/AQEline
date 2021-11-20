@@ -33,6 +33,20 @@ public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
     }
 
     @Override
+    public Void visit(AssignFloatNode node) {
+        String symbol = node.getSymbolId();
+
+        symbolTable.setCurrentType(Type.FLOAT);
+        visit(node.getChildren().get(0));
+        symbolTable.resetCurrentType();
+
+        if (!symbolTable.checkSymbol(symbol)) {
+            symbolTable.declare(new Symbol(Type.FLOAT, symbol));
+        }
+        return null;
+    }
+
+    @Override
     public Void visit(AssignStrNode node) {
         String symbol = node.getSymbolId();
 
@@ -101,7 +115,13 @@ public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
     }
 
     @Override
-    public Void visit(NumNode node) {
+    public Void visit(FloatNode node) {
+        symbolTable.checkFloatType(node.getNumber());
+        return null;
+    }
+
+    @Override
+    public Void visit(IntNode node) {
         return null;
     }
 

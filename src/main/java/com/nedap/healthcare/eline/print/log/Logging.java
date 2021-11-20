@@ -2,9 +2,6 @@ package com.nedap.healthcare.eline.print.log;
 
 import com.nedap.healthcare.eline.print.ansi.Ansi;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class contains strings for logging and methods for printing.
  */
@@ -22,7 +19,8 @@ public class Logging {
 
     // ERROR MESSAGES
     public static final String ERROR_ST = "SymbolTable finished with errors:";
-    public static final String ERROR_ST_TYPE = "Symbol [%s] has type [%s] while [%s] expected";
+    public static final String ERROR_ST_SYMBOL_TYPE = "Symbol [%s] has type [%s] while [%s] expected";
+    public static final String ERROR_ST_FLOAT_TYPE = "Could not convert FLOAT [%s] to INTEGER without data loss";
 
     public static final String ERROR_DUPLICATE = "Symbol [%s] already in scope.";
     public static final String ERROR_UNREGISTERED = "Symbol [%s] not declared.";

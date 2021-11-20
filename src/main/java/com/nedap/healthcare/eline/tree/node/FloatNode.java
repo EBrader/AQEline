@@ -1,13 +1,13 @@
 package com.nedap.healthcare.eline.tree.node;
 
-public class NumNode extends ASTNode {
-    private final Integer number;
+public class FloatNode extends ASTNode {
+    private final Float number;
 
-    public NumNode(Integer number) {
+    public FloatNode(Float number) {
         this.number = number;
     }
 
-    public Integer getNumber() {
+    public Float getNumber() {
         return number;
     }
 

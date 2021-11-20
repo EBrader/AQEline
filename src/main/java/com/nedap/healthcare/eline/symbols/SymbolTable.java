@@ -59,10 +59,33 @@ public class SymbolTable {
     }
 
     public void checkSymbolType(final Symbol symbol) {
-        if(symbol.getType() != currentType) {
-            ERROR_LOG.add(String.format(Logging.ERROR_ST_TYPE, symbol.getIdentifier(), symbol.getType().name(), currentType.name()));
+        Type symbolType = symbol.getType();
+        boolean error = false;
+
+        switch(currentType) {
+            case INTEGER:
+                error = (symbolType == Type.FLOAT || symbolType == Type.STRING);
+                break;
+            case FLOAT:
+                error = symbolType == Type.STRING;
+                break;
+            case STRING:
+                error = (symbolType == Type.INTEGER || symbolType == Type.FLOAT);
+                break;
+            default:
+                error = true;
+        }
+        if(error) {
+            ERROR_LOG.add(String.format(Logging.ERROR_ST_SYMBOL_TYPE, symbol.getIdentifier(), symbol.getType().name(), currentType.name()));
         }
     }
+
+    public void checkFloatType(final float value) {
+        if (currentType == Type.INTEGER) {
+            ERROR_LOG.add(String.format(Logging.ERROR_ST_FLOAT_TYPE, value));
+        }
+    }
+
     public void setCurrentType(Type currentType) { this.currentType = currentType; }
     public void resetCurrentType() { currentType = null; }
 

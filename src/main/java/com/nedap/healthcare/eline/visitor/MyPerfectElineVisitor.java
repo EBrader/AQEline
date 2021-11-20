@@ -21,6 +21,11 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
     }
 
     @Override
+    public ASTNode visitAssignFloat(ElineParser.AssignFloatContext ctx) {
+        return new AssignStrNode(ctx.SYM().getText(), visit(ctx.expression()));
+    }
+
+    @Override
     public ASTNode visitAssignStr(ElineParser.AssignStrContext ctx) {
         return new AssignStrNode(ctx.SYM().getText(), visit(ctx.string_expression()));
     }
@@ -50,7 +55,16 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitPrimitive(ElineParser.PrimitiveContext ctx) {
-        return new NumNode(Integer.parseInt(ctx.INT().getText()));
+        String value = ctx.prim.getText();
+
+        switch (ctx.prim.getType()) {
+            case ElineLexer.INT:
+                return new IntNode(Integer.parseInt(value));
+            case ElineLexer.FLOAT:
+                return new FloatNode(Float.parseFloat(value));
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     @Override
