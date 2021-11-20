@@ -15,13 +15,13 @@ public class Logging {
     public static final String CREATE_SCOPE = "Creating scope";
     public static final String CLOSE_SCOPE = "Closing scope";
 
-    public static final String REGISTER = "Registered symbol [%s]";
-    public static final String REGISTERED = "Registered symbols: [%s]";
+    public static final String REGISTER = "Registered symbol: %s";
+    public static final String REGISTERED = "Registered symbols: %s";
 
     public static final String SUCCESS_ST = "SymbolTable finished with success";
 
     // ERROR MESSAGES
-    public static final String ERROR_ST = "SymbolTable finished with errors: %s";
+    public static final String ERROR_ST = "SymbolTable finished with errors:";
     public static final String ERROR_ST_TYPE = "Symbol [%s] has type [%s] while [%s] expected";
 
     public static final String ERROR_DUPLICATE = "Symbol [%s] already in scope.";

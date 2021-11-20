@@ -14,6 +14,7 @@ public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
         symbolTable.openScope();
         node.getChildren().forEach(this::visit);
         symbolTable.closeScope();
+        symbolTable.checkErrors();
         return null;
     }
 
@@ -103,4 +104,5 @@ public class MyPerfectSymbolTableVisitor implements ASTVisitor<Void> {
     public Void visit(NumNode node) {
         return null;
     }
+
 }
