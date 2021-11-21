@@ -34,32 +34,32 @@ public class MyPerfectFloatVisitor implements ASTVisitor<Float> {
 
     @Override
     public Float visit(MulNode node) {
-        return null;
+        return visit(node.getChildren().get(0)) * visit(node.getChildren().get(1));
     }
 
     @Override
     public Float visit(DivNode node) {
-        return null;
+        return visit(node.getChildren().get(0)) / visit(node.getChildren().get(1));
     }
 
     @Override
     public Float visit(SubNode node) {
-        return null;
+        return visit(node.getChildren().get(0)) - visit(node.getChildren().get(1));
     }
 
     @Override
     public Float visit(AddNode node) {
-        return null;
+        return visit(node.getChildren().get(0)) + visit(node.getChildren().get(1));
     }
 
     @Override
     public Float visit(PowNode node) {
-        return null;
+        return (float) Math.pow(visit(node.getChildren().get(0)), visit(node.getChildren().get(1)));
     }
 
     @Override
     public Float visit(SymbolNode node) {
-        return null;
+        return Float.parseFloat(resultVisitor.findSymbol(node.getSymbolId()).getValue());
     }
 
     @Override
@@ -69,11 +69,11 @@ public class MyPerfectFloatVisitor implements ASTVisitor<Float> {
 
     @Override
     public Float visit(FloatNode node) {
-        return null;
+        return node.getNumber();
     }
 
     @Override
     public Float visit(IntNode node) {
-        return null;
+        return (float) node.getNumber();
     }
 }

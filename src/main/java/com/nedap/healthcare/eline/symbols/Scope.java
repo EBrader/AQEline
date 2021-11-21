@@ -42,7 +42,10 @@ public class Scope {
     public String listSymbols() {
         StringBuilder list = new StringBuilder();
         symbols.forEach(symbol -> list.append(symbol.getIdentifier()).append(" - "));
-        list.deleteCharAt(list.lastIndexOf("-"));
+        int index = list.lastIndexOf("-");
+        if(index > 0) {
+            list.deleteCharAt(list.lastIndexOf("-"));
+        }
         return list.toString();
     }
 }

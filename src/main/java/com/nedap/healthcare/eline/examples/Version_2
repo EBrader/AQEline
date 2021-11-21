@@ -1,7 +1,8 @@
-int x = 2;
-int y = x + 5;
 {
-int x = 4;
-int y = x + 12;
-int z = 5;
+int x = 1;
+int y = x + 2;
+{
+float x = 7.0;
+float y = x + 4;
+}
 }
