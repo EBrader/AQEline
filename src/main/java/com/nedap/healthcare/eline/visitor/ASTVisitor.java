@@ -1,8 +1,10 @@
-package com.nedap.healthcare.eline.tree.node;
+package com.nedap.healthcare.eline.visitor;
 
-import com.nedap.healthcare.eline.tree.node.assign.AssignFloatNode;
-import com.nedap.healthcare.eline.tree.node.assign.AssignIntNode;
-import com.nedap.healthcare.eline.tree.node.assign.AssignStrNode;
+import com.nedap.healthcare.eline.tree.node.ASTNode;
+import com.nedap.healthcare.eline.tree.node.BlockNode;
+import com.nedap.healthcare.eline.tree.node.ProgramNode;
+import com.nedap.healthcare.eline.tree.node.SymbolNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignNode;
 import com.nedap.healthcare.eline.tree.node.function.*;
 import com.nedap.healthcare.eline.tree.node.type.FloatNode;
 import com.nedap.healthcare.eline.tree.node.type.IntNode;
@@ -16,11 +18,7 @@ public interface ASTVisitor <I>  {
 
     I visit(ProgramNode node);
 
-    I visit(AssignIntNode node);
-
-    I visit(AssignFloatNode node);
-
-    I visit(AssignStrNode node);
+    I visit(AssignNode node);
 
     I visit(BlockNode node);
 

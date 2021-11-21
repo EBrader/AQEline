@@ -8,16 +8,25 @@ public class Symbol {
 
     private final Type type;
     private final String identifier;
+    private final String value;
 
-    public Symbol(Type type, String identifier) {
+    public Symbol(final Type type, final String identifier, final String value) {
         this.type = type;
         this.identifier = identifier;
+        this.value = value;
+    }
+
+    public Symbol(final Type type, final String identifier) {
+        this(type, identifier, null);
     }
 
     public String getIdentifier() {
         return identifier;
     }
     public Type getType() { return type; }
+    public String getValue() { return value; }
+
+
 
     @Override
     public boolean equals(Object o) {

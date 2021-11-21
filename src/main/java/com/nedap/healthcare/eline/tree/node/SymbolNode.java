@@ -1,5 +1,7 @@
 package com.nedap.healthcare.eline.tree.node;
 
+import com.nedap.healthcare.eline.visitor.ASTVisitor;
+
 public class SymbolNode extends ASTNode {
     private final String symbolId;
 

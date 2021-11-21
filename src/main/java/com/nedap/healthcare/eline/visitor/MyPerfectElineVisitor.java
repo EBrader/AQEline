@@ -7,13 +7,12 @@ import com.nedap.healthcare.eline.tree.node.ASTNode;
 import com.nedap.healthcare.eline.tree.node.BlockNode;
 import com.nedap.healthcare.eline.tree.node.ProgramNode;
 import com.nedap.healthcare.eline.tree.node.SymbolNode;
-import com.nedap.healthcare.eline.tree.node.assign.AssignFloatNode;
-import com.nedap.healthcare.eline.tree.node.assign.AssignIntNode;
-import com.nedap.healthcare.eline.tree.node.assign.AssignStrNode;
+import com.nedap.healthcare.eline.tree.node.assign.AssignNode;
 import com.nedap.healthcare.eline.tree.node.function.*;
 import com.nedap.healthcare.eline.tree.node.type.FloatNode;
 import com.nedap.healthcare.eline.tree.node.type.IntNode;
 import com.nedap.healthcare.eline.tree.node.type.StringNode;
+import com.nedap.healthcare.eline.types.Type;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,17 +26,17 @@ public class MyPerfectElineVisitor extends ElineBaseVisitor<ASTNode> {
 
     @Override
     public ASTNode visitAssignInt(ElineParser.AssignIntContext ctx) {
-        return new AssignIntNode(ctx.SYM().getText(), visit(ctx.expression()));
+        return new AssignNode(Type.INTEGER, ctx.SYM().getText(), visit(ctx.expression()));
     }
 
     @Override
     public ASTNode visitAssignFloat(ElineParser.AssignFloatContext ctx) {
-        return new AssignFloatNode(ctx.SYM().getText(), visit(ctx.expression()));
+        return new AssignNode(Type.FLOAT, ctx.SYM().getText(), visit(ctx.expression()));
     }
 
     @Override
     public ASTNode visitAssignStr(ElineParser.AssignStrContext ctx) {
-        return new AssignStrNode(ctx.SYM().getText(), visit(ctx.string_expression()));
+        return new AssignNode(Type.STRING, ctx.SYM().getText(), visit(ctx.string_expression()));
     }
 
     @Override

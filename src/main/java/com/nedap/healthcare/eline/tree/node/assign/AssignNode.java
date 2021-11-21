@@ -1,16 +1,19 @@
 package com.nedap.healthcare.eline.tree.node.assign;
 
 import com.nedap.healthcare.eline.tree.node.ASTNode;
-import com.nedap.healthcare.eline.tree.node.ASTVisitor;
+import com.nedap.healthcare.eline.types.Type;
+import com.nedap.healthcare.eline.visitor.ASTVisitor;
 
 import java.util.List;
 
-public class AssignStrNode extends ASTNode {
+public class AssignNode extends ASTNode {
 
+    private final Type assignType;
     private final String symbolId;
 
-    public AssignStrNode(String symbolId, ASTNode expression) {
+    public AssignNode(final Type assignType, final String symbolId, final ASTNode expression) {
         super(List.of(expression));
+        this.assignType = assignType;
         this.symbolId = symbolId;
     }
 
@@ -19,6 +22,7 @@ public class AssignStrNode extends ASTNode {
         return visitor.visit(this);
     }
 
+    public Type getAssignType() { return assignType;}
     public String getSymbolId() {
         return symbolId;
     }

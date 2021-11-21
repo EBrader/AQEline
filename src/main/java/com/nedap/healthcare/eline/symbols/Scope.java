@@ -1,7 +1,5 @@
 package com.nedap.healthcare.eline.symbols;
 
-import com.nedap.healthcare.eline.print.ansi.Ansi;
-
 import java.util.HashSet;
 import java.util.Set;
 

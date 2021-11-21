@@ -1,6 +1,7 @@
 package com.nedap.healthcare.eline;
 
 import com.nedap.healthcare.eline.visitor.MyPerfectElineVisitor;
+import com.nedap.healthcare.eline.visitor.MyPerfectResultVisitor;
 import com.nedap.healthcare.eline.visitor.MyPerfectSymbolTableVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -18,7 +19,7 @@ public class Calculator {
     }
 
     public static void main(String[] args) throws Exception {
-        var is = Calculator.getFile("Version_1");
+        var is = Calculator.getFile("Version_2");
         var lexer = new ElineLexer(CharStreams.fromStream(is)); // je kunt ook CharStreams.fromString("x = 2\n2*x\n") doen ofzo
         var tokenStream = new CommonTokenStream(lexer);
         var parser = new ElineParser(tokenStream);
@@ -26,5 +27,6 @@ public class Calculator {
 
         var ast = stat.accept(new MyPerfectElineVisitor());
         ast.accept(new MyPerfectSymbolTableVisitor());
+        ast.accept(new MyPerfectResultVisitor());
     }
 }
