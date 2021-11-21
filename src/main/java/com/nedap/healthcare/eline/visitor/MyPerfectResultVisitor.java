@@ -1,6 +1,7 @@
 package com.nedap.healthcare.eline.visitor;
 
 import com.nedap.healthcare.eline.print.ansi.Ansi;
+import com.nedap.healthcare.eline.print.log.Logging;
 import com.nedap.healthcare.eline.symbols.Symbol;
 import com.nedap.healthcare.eline.symbols.SymbolTable;
 import com.nedap.healthcare.eline.tree.node.BlockNode;
@@ -13,13 +14,13 @@ import com.nedap.healthcare.eline.tree.node.type.IntNode;
 import com.nedap.healthcare.eline.tree.node.type.StringNode;
 import com.nedap.healthcare.eline.types.Type;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyPerfectResultVisitor implements ASTVisitor<Void> {
 
     private final SymbolTable symbolTable = new SymbolTable();
-    private final Set<Symbol> results = new HashSet<>();
+    private final List<Symbol> results = new ArrayList<>();
 
     @Override
     public Void visit(ProgramNode node) {
@@ -113,13 +114,17 @@ public class MyPerfectResultVisitor implements ASTVisitor<Void> {
     }
 
     public void printResults() {
+
         for (Symbol symbol : results) {
+            Ansi color = Logging.getTypeColor(symbol.getType());
             System.out.printf(
                     "Type: %-20s || Symbol: %-20s || Value: %s%n",
-                    Ansi.Blue.colorize(symbol.getType().name()),
-                    Ansi.Blue.colorize(symbol.getIdentifier()),
-                    Ansi.Blue.colorize(symbol.getValue()));
+                    color.colorize(symbol.getType().name()),
+                    color.colorize(symbol.getIdentifier()),
+                    color.colorize(symbol.getValue()));
         }
     }
+
+
 
 }

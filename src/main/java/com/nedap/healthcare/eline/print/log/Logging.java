@@ -1,6 +1,7 @@
 package com.nedap.healthcare.eline.print.log;
 
 import com.nedap.healthcare.eline.print.ansi.Ansi;
+import com.nedap.healthcare.eline.types.Type;
 
 /**
  * This class contains strings for logging and methods for printing.
@@ -28,5 +29,18 @@ public class Logging {
     public static void printLog(final String message, final Ansi color) {
         String msg = PRINT_LOG ? color.colorize(message) + "\n" : "";
         System.out.print(msg);
+    }
+
+    public static Ansi getTypeColor(final Type type) {
+        switch(type){
+            case INTEGER:
+                return Ansi.Blue;
+            case FLOAT:
+                return Ansi.Magenta;
+            case STRING:
+                return Ansi.Cyan;
+            default:
+                return Ansi.Red;
+        }
     }
 }
