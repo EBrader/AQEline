@@ -55,6 +55,7 @@ LINE_COMMENT
     : '//' ~[\r\n]* NEWLINE -> skip;
 
 //// globale scope
+// THIS IS TO TEST THE CHANGE
 //var x = 2;  // definitie van een variabele
 //var y = 3;
 //var z = x + y; // optellen, kan met variabelen
